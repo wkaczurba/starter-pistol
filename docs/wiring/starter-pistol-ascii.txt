@@ -1,0 +1,48 @@
+STARTER PISTOL - WIRING (ASCII)                                       rev 0
+================================================================================
+Drawn from the routing table; starter-pistol-netlist.txt is the authoritative text version.
+  o = pin / terminal      * = wires joined      + = corner / crossing joined
+  Wire names are written above each wire. All GND pins are common.
+  INMP441 L/R is tied to GND (left channel).
+================================================================================
+
+            +12V
+          +-------------------------*---------------------------------------------------------------------------------------+
+          |                         |                                                                                       |
+          |                         |                   +--------------------+                        +--------------+      |
+          |                         |                   |  NodeMCU ESP-12E   |                        |   INMP441    |      |
+  +-------o------+        +---------o--------+          | ("Arduino board")  |          3V3           | I2S MEMS mic |      |
+  |   BAT_12V+   |        |      VCC_IN      |    +5V   |                3V3 o------------------------o VDD          |      |
+  |              |        |      VCC_OUT +5V o----------o VCC_IN             |        I2S_SCK         |              |      |
+  |              |        |    BASE BOARD    |          |      D7 (I2SI_BCK) o------------------------o SCK          |      |
+  | BATTERY 12V  |        |    12V -> 5V     |          |                    |        I2S_WS          |              |      |
+  |              |        |                  |          |       D5 (I2SI_WS) o------------------------o WS           |      |
+  |              |        |                  |          |                    |        I2S_SD          |              |      |
+  |   BAT_12V-   |        |        GND       |          |     D6 (I2SI_DATA) o------------------------o SD           |      |
+  +-------o------+        +---------o--------+          |                    |                        |              |      |
+          |                         |                   |                    |          GND        +--o L/R          |      |
+          |                         |                   |                GND o---------------------*--o GND          |      |
+          |                         |                   |                    |                        |              |      |
+          |                         |                   |                    |                        +--------------+      |
+          |                         |                   |                    |                                              |
+          |                         |                   |                    |                                 +------------+
+          |                         |                   |                    |                                 |
+          |                         |                   |                    |                                 |
+          |                         |                   |                    |                        +--------o-------+            +----------+
+          |                         |                   |                    |                        |       VIN      | LED_+12V   |          |
+          |                         |                   |                    |       GATE (D0)        |             V+ o------------o +12V     |
+          |                         |                   |        D0 (GPIO16) o------------------------o SIG            |            |          |
+          |                         |                   |                    |                        |                |            |          |
+          |                         |                   |                    |                        | IRF520 MOSFET  |            | LED LAMP |
+          |                         |                   |                    |                        | driver module  | LED_-12V   |          |
+          |                         |                   |                    |                        |             V- o------------o -12V     |
+          |                         |                   |        GND         |                        |                |            |          |
+          |                         |                   +---------o----------+                        |       GND      |            |          |
+          |                         |                             |                                   +--------o-------+            +----------+
+          |                         |                             |                                            |
+          |                         |                             |                                            |
+          | GND                     |                             |                                            |
+          +-------------------------*-----------------------------*--------------------------------------------+
+
+Signal chain:  I2S mic (INMP441) -> NodeMCU (FIR band-pass + edge detector)
+               -> D0 -> IRF520 gate -> LED lamp switched on the GND side
