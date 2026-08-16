@@ -27,6 +27,8 @@
 #define NOISE_ALPHA 0.0002f
 #define COOLDOWN_SAMPLES 3200 // 200 ms at 16 kHz
 
+#define USE_LONG_FIR
+
 #ifdef USE_LONG_FIR
 #define FIR_LEN 63
 // 3-6 kHz band-pass FIR, fs=16 kHz
@@ -135,6 +137,8 @@ static void detectPistolShot(float filtered) {
 
 void setup() {
   Serial.begin(115200);
+  Serial.print("Using FIR length:");
+  Serial.print(FIR_LEN);
 
   pinMode(PIN_MOSFET, OUTPUT);
   mosfet_off();
