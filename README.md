@@ -4,6 +4,9 @@ Firmware for a NodeMCU ESP-12E (ESP8266) board that listens on an I2S
 microphone for a starter-pistol shot and fires an external MOSFET-driven
 output when one is detected.
 
+See [ABOUT.md](ABOUT.md) for the motivation (a visual start signal for deaf
+and hard-of-hearing young runners) and the technical challenges involved.
+
 Provided in two equivalent forms with the same logic:
 
 - [`src/main.cpp`](src/main.cpp) — PlatformIO project (`platformio.ini`).
