@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Opis projektu — wykrywacz strzału pistoletu startowego</title>
+  <style>
+    :root {
+      --ink: #17212b;
+      --muted: #62707d;
+      --line: #d9e1e8;
+      --accent: #087f8c;
+      --accent-dark: #075e68;
+      --accent-soft: #e7f4f5;
+      --paper: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      background: #e8ecef;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: #e8ecef;
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      font-size: 9.5pt;
+      line-height: 1.48;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .screen-toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      padding: 12px;
+      color: #fff;
+      background: rgba(23, 33, 43, 0.96);
+      box-shadow: 0 2px 14px rgba(0, 0, 0, 0.15);
+    }
+
+    .screen-toolbar button {
+      padding: 9px 16px;
+      color: #fff;
+      background: var(--accent);
+      border: 0;
+      border-radius: 6px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .screen-toolbar span {
+      align-self: center;
+      color: #dce4e9;
+      font-size: 9pt;
+    }
+
+    .sheet {
+      position: relative;
+      width: 210mm;
+      height: 297mm;
+      margin: 12mm auto;
+      overflow: hidden;
+      background: var(--paper);
+      box-shadow: 0 4px 28px rgba(29, 42, 53, 0.17);
+      break-after: page;
+      page-break-after: always;
+    }
+
+    .sheet:last-of-type {
+      break-after: auto;
+      page-break-after: auto;
+    }
+
+    .page-header {
+      position: absolute;
+      top: 13mm;
+      left: 18mm;
+      right: 18mm;
+      height: 18mm;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding-bottom: 5mm;
+      border-bottom: 0.35mm solid var(--line);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 3mm;
+      font-size: 8pt;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 8mm;
+      height: 8mm;
+      place-items: center;
+      color: #fff;
+      background: var(--accent);
+      border-radius: 2mm;
+      font-size: 6.7pt;
+      letter-spacing: 0;
+    }
+
+    .header-label {
+      padding-top: 1.4mm;
+      color: var(--muted);
+      font-size: 7.4pt;
+      font-weight: 650;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    .page-content {
+      position: absolute;
+      top: 37mm;
+      right: 18mm;
+      bottom: 22mm;
+      left: 18mm;
+      column-count: 2;
+      column-gap: 10mm;
+      column-rule: 0.25mm solid var(--line);
+    }
+
+    .title-block {
+      margin: 0 0 7mm;
+      padding: 0 0 6mm;
+      border-bottom: 1.2mm solid var(--accent);
+      break-inside: avoid;
+      column-span: all;
+    }
+
+    .kicker {
+      margin: 0 0 2.5mm;
+      color: var(--accent-dark);
+      font-size: 8pt;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 165mm;
+      margin: 0;
+      font-size: 24pt;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+    }
+
+    .lead {
+      max-width: 165mm;
+      margin: 3mm 0 0;
+      color: var(--muted);
+      font-size: 11pt;
+      line-height: 1.4;
+    }
+
+    .section {
+      margin: 0 0 5mm;
+      break-inside: avoid;
+    }
+
+    .section h2 {
+      display: flex;
+      align-items: baseline;
+      gap: 2.5mm;
+      margin: 0 0 2mm;
+      color: var(--accent-dark);
+      font-size: 11.2pt;
+      line-height: 1.2;
+    }
+
+    .section-number {
+      color: var(--accent);
+      font-size: 8pt;
+      font-weight: 850;
+      letter-spacing: 0.08em;
+    }
+
+    p {
+      margin: 0 0 2.6mm;
+      text-align: left;
+      hyphens: auto;
+      orphans: 3;
+      widows: 3;
+    }
+
+    ul {
+      margin: 1.5mm 0 0;
+      padding-left: 5mm;
+    }
+
+    li {
+      margin-bottom: 1.2mm;
+      padding-left: 0.7mm;
+    }
+
+    li::marker {
+      color: var(--accent);
+    }
+
+    .callout {
+      margin: 2mm 0 5mm;
+      padding: 4mm;
+      background: var(--accent-soft);
+      border-left: 1.2mm solid var(--accent);
+      border-radius: 0 2mm 2mm 0;
+      break-inside: avoid;
+    }
+
+    .callout strong {
+      display: block;
+      margin-bottom: 1mm;
+      color: var(--accent-dark);
+      font-size: 8pt;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .spec-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5mm;
+      margin: 2mm 0 5mm;
+      break-inside: avoid;
+    }
+
+    .spec {
+      min-height: 18mm;
+      padding: 3mm;
+      background: #f5f7f9;
+      border-top: 0.8mm solid var(--accent);
+    }
+
+    .spec-label {
+      display: block;
+      margin-bottom: 1mm;
+      color: var(--muted);
+      font-size: 6.8pt;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .spec-value {
+      font-size: 9pt;
+      font-weight: 750;
+      line-height: 1.25;
+    }
+
+    .page-footer {
+      position: absolute;
+      right: 18mm;
+      bottom: 10mm;
+      left: 18mm;
+      display: grid;
+      grid-template-columns: 1.45fr 1.15fr 0.8fr 0.55fr;
+      gap: 4mm;
+      align-items: end;
+      padding-top: 3mm;
+      color: var(--muted);
+      border-top: 0.35mm solid var(--line);
+      font-size: 7.2pt;
+    }
+
+    .page-footer strong {
+      color: var(--ink);
+      font-weight: 750;
+    }
+
+    .page-footer .right {
+      text-align: right;
+    }
+
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+
+    @media print {
+      html,
+      body {
+        background: #fff;
+      }
+
+      .screen-toolbar {
+        display: none !important;
+      }
+
+      .sheet {
+        margin: 0;
+        box-shadow: none;
+      }
+    }
+
+    @media screen and (max-width: 850px) {
+      .sheet {
+        transform-origin: top left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="screen-toolbar" aria-hidden="true">
+    <button type="button" onclick="window.print()">Drukuj / zapisz jako PDF</button>
+    <span>Format A4 · skala 100% · marginesy: brak · grafika tła: włączona</span>
+  </div>
+
+  <!-- STRONA 1: aby uzyskać dokument jednostronicowy, usuń całą sekcję STRONA 2. -->
+  <section class="sheet">
+    <header class="page-header">
+      <div class="brand">
+        <span class="brand-mark">WK</span>
+        <span>WK Software Solutions</span>
+      </div>
+      <div class="header-label">Opis projektu technicznego</div>
+    </header>
+
+    <main class="page-content">
+      <div class="title-block">
+        <p class="kicker">Technologia wspierająca dostępność sportu</p>
+        <h1>Świetlny wykrywacz strzału pistoletu startowego</h1>
+        <p class="lead">Przenośny system zamieniający akustyczny sygnał startu na natychmiastowy i jednoznaczny sygnał świetlny dla osób niesłyszących i niedosłyszących.</p>
+      </div>
+
+      <section class="section">
+        <h2><span class="section-number">01</span> Problem</h2>
+        <p>W biegach lekkoatletycznych podstawowym sygnałem startowym jest wystrzał pistoletu. Osoba niesłysząca lub niedosłysząca może go nie odebrać albo zareagować z opóźnieniem. Jednoczesne obserwowanie startera jest trudne, zwłaszcza podczas startu z bloków, gdy zawodnik patrzy w dół i koncentruje się na prawidłowym rozpoczęciu biegu.</p>
+        <p>W przypadku zawodów - zdarza się że oprócz startera jest druga osoba (trener) który macha dodatkowo flagą w momencie startu. Dodaje to duże opóźnienie rzędku kilkuset milisekund.</p>
+        <p>Brak dostępnego sygnału wizualnego tworzy nierówne warunki na treningach i zawodach. Potrzebne jest rozwiązanie, które można szybko ustawić przy torze bez modyfikowania infrastruktury stadionu.</p>
+      </section>
+
+      <div class="callout">
+        <strong>Główna idea</strong>
+        Dźwięk wystrzału jest wykrywany automatycznie, a urządzenie niemal natychmiast uruchamia dobrze widoczny zielony sygnał świetlny w stronę zawodnika. Opóźnienie od wykrycia strzału do światła jest poniżej 15ms.
+      </div>
+
+      <section class="section">
+        <h2><span class="section-number">02</span> Cel projektu</h2>
+        <p>Celem jest opracowanie niedrogiego, mobilnego i niezawodnego urządzenia wspierającego osoby z ubytkiem słuchu. System powinien nadawać się zarówno do codziennych treningów, jak i do wykorzystania podczas lokalnych zawodów lekkoatletycznych.</p>
+      </section>
+
+      <section class="section">
+        <h2><span class="section-number">03</span> Zasada działania</h2>
+        <p>Mikrofon cyfrowy stale odbiera dźwięki otoczenia. Mikrokontroler analizuje próbki w czasie rzeczywistym i poszukuje krótkiego impulsu o cechach charakterystycznych dla strzału. Po spełnieniu warunków detekcji sterownik włącza lampę LED.</p>
+        <p>Analiza może obejmować amplitudę, szybkość narastania sygnału, czas trwania impulsu oraz energię w wybranych pasmach częstotliwości. Pozwala to odróżnić wystrzał od mowy, oklasków i typowych dźwięków stadionu.</p>
+      </section>
+
+      <div class="spec-grid">
+        <div class="spec">
+          <span class="spec-label">Wejście</span>
+          <span class="spec-value">Mikrofon MEMS / I²S</span>
+        </div>
+        <div class="spec">
+          <span class="spec-label">Sterowanie</span>
+          <span class="spec-value">ESP32, ESP8266 lub Arduino</span>
+        </div>
+        <div class="spec">
+          <span class="spec-label">Wyjście</span>
+          <span class="spec-value">Jasna lampa LED / stroboskop</span>
+        </div>
+        <div class="spec">
+          <span class="spec-label">Zastosowanie</span>
+          <span class="spec-value">Trening i zawody</span>
+        </div>
+      </div>
+
+      <section class="section">
+        <h2><span class="section-number">04</span> Budowa prototypu</h2>
+        <p>Podstawowy zestaw obejmuje mikrofon, płytkę mikrokontrolera, moduł zasilania, tranzystor MOSFET oraz lampę o dużej jasności. Elementy można umieścić w niewielkiej obudowie z uchwytem umożliwiającym ustawienie światła przy blokach startowych.</p>
+        <ul>
+          <li>regulowana czułość detekcji,</li>
+          <li>kontrolka gotowości i poziomu zasilania,</li>
+          <li>przycisk testu lampy,</li>
+          <li>zasilanie akumulatorowe.</li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="page-footer">
+      <div><strong>WK Software Solutions</strong></div>
+      <div>Witold Kaczurba</div>
+      <div>Data: <span class="document-date">—</span></div>
+      <div class="right">Strona <strong class="page-number">—</strong> / <span class="page-total">—</span></div>
+    </footer>
+  </section>
+
+  <!-- STRONA 2 -->
+  <section class="sheet">
+    <header class="page-header">
+      <div class="brand">
+        <span class="brand-mark">WK</span>
+        <span>WK Software Solutions</span>
+      </div>
+      <div class="header-label">Opis projektu technicznego</div>
+    </header>
+
+    <main class="page-content">
+      <div class="title-block">
+        <p class="kicker">Realizacja i rozwój</p>
+        <h1>Detekcja, sygnalizacja i testy</h1>
+        <p class="lead">Najważniejsze założenia techniczne oraz sposób sprawdzenia skuteczności rozwiązania w rzeczywistych warunkach.</p>
+      </div>
+
+      <section class="section">
+        <h2><span class="section-number">05</span> Rozpoznawanie wystrzału</h2>
+        <p>Proste reagowanie na przekroczenie ustalonego poziomu głośności może prowadzić do fałszywych wyzwoleń. Dlatego algorytm powinien łączyć kilka kryteriów: nagły wzrost amplitudy, krótki czas trwania, odpowiedni rozkład częstotliwości oraz odstęp od poprzedniego zdarzenia.</p>
+        <p>Parametry mogą być dobierane podczas kalibracji przeprowadzanej na stadionie. Filtracja cyfrowa ograniczy wpływ wiatru, rozmów, systemu nagłośnienia oraz dźwięków dochodzących z trybun.</p>
+      </section>
+
+      <section class="section">
+        <h2><span class="section-number">06</span> Sygnał świetlny</h2>
+        <p>Po rozpoznaniu strzału urządzenie generuje krótki, wyraźny błysk. Światło powinno być widoczne również w dzień, lecz ustawione tak, aby nie oślepiało biegacza. Możliwa jest regulacja jasności, długości błysku oraz tryb testowy utrzymujący światło przez kilka sekund.</p>
+      </section>
+
+      <div class="callout">
+        <strong>Kluczowe wymaganie</strong>
+        Opóźnienie od wystrzału do pojawienia się światła powinno być minimalne, mierzalne i powtarzalne. W sprintach nawet niewielka różnica może wpływać na wynik zawodnika.
+      </div>
+
+      <section class="section">
+        <h2><span class="section-number">07</span> Testowanie</h2>
+        <p>Prototyp należy sprawdzić na stadionie otwartym i w hali, przy różnych odległościach od pistoletu oraz zmiennym poziomie hałasu. Pomiar powinien obejmować czas reakcji urządzenia, udział prawidłowo wykrytych strzałów oraz liczbę fałszywych alarmów.</p>
+        <p>Próby z udziałem niesłyszących i niedosłyszących biegaczy pozwolą ocenić widoczność lampy, najlepsze miejsce jej ustawienia oraz wygodę korzystania z systemu.</p>
+      </section>
+
+      <section class="section">
+        <h2><span class="section-number">08</span> Bezpieczeństwo i niezawodność</h2>
+        <p>Urządzenie powinno sygnalizować gotowość, niski poziom baterii oraz awarię mikrofonu lub lampy. Obudowa musi chronić elektronikę przed lekkim deszczem, pyłem i przypadkowym uderzeniem. Konstrukcja nie może przeszkadzać zawodnikom ani osobom obsługującym zawody.</p>
+      </section>
+
+      <section class="section">
+        <h2><span class="section-number">09</span> Możliwości rozwoju</h2>
+        <ul>
+          <li>kilka bezprzewodowo synchronizowanych lamp,</li>
+          <li>rejestrowanie czasu reakcji zawodnika,</li>
+          <li>konfiguracja parametrów z telefonu,</li>
+          <li>bezpośredni sygnał radiowy od startera,</li>
+          <li>integracja z elektronicznym pomiarem czasu.</li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <h2><span class="section-number">10</span> Wartość rozwiązania</h2>
+        <p>Projekt łączy prostą elektronikę z analizą sygnału w czasie rzeczywistym. Jego główną wartością jest zwiększenie dostępności sportu i stworzenie bardziej równych warunków startu. Mobilna konstrukcja pozwala używać systemu na obiektach, które nie mają specjalistycznej instalacji dla zawodników z ubytkiem słuchu.</p>
+      </section>
+    </main>
+
+    <footer class="page-footer">
+      <div><strong>WK Software Solutions</strong></div>
+      <div>Witold Kaczurba</div>
+      <div>Data: <span class="document-date">—</span></div>
+      <div class="right">Strona <strong class="page-number">—</strong> / <span class="page-total">—</span></div>
+    </footer>
+  </section>
+
+  <script>
+    (() => {
+      const pages = [...document.querySelectorAll('.sheet')];
+      const date = new Intl.DateTimeFormat('pl-PL', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      }).format(new Date());
+
+      document.querySelectorAll('.document-date').forEach((element) => {
+        element.textContent = date;
+      });
+
+      pages.forEach((page, index) => {
+        page.querySelector('.page-number').textContent = String(index + 1);
+        page.querySelector('.page-total').textContent = String(pages.length);
+      });
+    })();
+  </script>
+</body>
+</html>

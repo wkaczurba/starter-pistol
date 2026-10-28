@@ -143,7 +143,8 @@
 
     .page-content.page-one,
     .page-content.page-two,
-    .page-content.page-three {
+    .page-content.page-three,
+    .page-content.page-four {
       column-count: auto;
       column-width: auto;
       column-gap: 0;
@@ -268,11 +269,11 @@
       min-width: 0;
     }
 
-    .measurement-column .measurement-images {
+    .page-three-details .measurement-images {
       grid-template-columns: 1fr;
-      gap: 5mm;
+      gap: 3mm;
       max-width: none;
-      margin-top: 3mm;
+      margin: 1.5mm 0 4mm;
     }
 
     .measurement-copy {
@@ -305,6 +306,10 @@
       background: #f3f4f5;
       border: 0.35mm solid #aeb7bf;
       border-radius: 1mm;
+    }
+
+    .field-photo {
+      margin-top: 2.5mm;
     }
 
     .measurement-figure figcaption {
@@ -701,13 +706,7 @@
     </header>
 
     <main class="page-content page-one">
-      <!-- Zastąp poniższy element znacznikiem: <img class="device-photo-placeholder" src="twoje-zdjecie.jpg" alt="Prototyp urządzenia"> -->
-      <div class="device-photo-placeholder" role="img" aria-label="Miejsce na zdjęcie urządzenia o proporcjach 1020 na 471 pikseli">
-        <div class="photo-placeholder-label">
-          <strong>Miejsce na zdjęcie urządzenia</strong>
-          <span>ZALECANY ROZMIAR: 1020 × 471 PX</span>
-        </div>
-      </div>
+      <img class="device-photo-placeholder" src="assets/prototyp_front.jpg" alt="Prototyp urządzenia — widok z przodu">
 
       <div class="title-block">
         <p class="kicker">Technologia wspierająca dostępność sportu</p>
@@ -861,11 +860,21 @@
       <div class="page-three-columns">
       <div class="measurement-column">
         <section class="section">
-          <h2><span class="section-number">07</span> Testowanie i pomiary</h2>
-          <p>Wstępne testy wykazały odporność układu na mowę, typowy hałas otoczenia oraz podmuchy wiatru. Dalsze testowanie jest jednak wskazane, szczególnie na różnych stadionach, przy zmiennej odległości od startera i w trudniejszych warunkach pogodowych.</p>
-          <p>W pomiarze całego toru wykorzystano <strong>zewnętrzny mikrofon</strong> rejestrujący początek impulsu akustycznego oraz <strong>fotorezystor</strong> wykrywający zapalenie lampy. Zestaw pozwolił uwzględnić całkowite opóźnienie systemu, w tym odpowiedź i pojemność po stronie lampy LED. Zmierzone czasy reakcji od hałasu do światła wynosiły około <strong>5–10 ms</strong>.</p>
+          <h2><span class="section-number">07</span> Testowanie w terenie</h2>
+          <p>Urządzenie przetestowano w trakcie trwania zawodów lekkoatletycznych, zarówno z pistoletem na kapiszony, jak i z profesjonalnym pistoletem startowym Domtel. Wstępne testy wykazały odporność układu na mowę, typowy hałas otoczenia oraz podmuchy wiatru. Dalsze testowanie jest jednak wskazane, szczególnie na różnych stadionach, przy zmiennej odległości od startera i w trudniejszych warunkach pogodowych.</p>
+          <figure class="measurement-figure field-photo">
+            <img src="assets/field-testing/track-photo-edited.jpg" alt="Urządzenie podczas testów na zawodach">
+            <figcaption>Zdjęcie z testowania na zawodach (ze względu na RODO twarz zastąpiono wygenerowaną przez AI).</figcaption>
+          </figure>
         </section>
 
+        <section class="section">
+          <h2><span class="section-number">08</span> Testowanie w labie</h2>
+          <p>W pomiarze całego toru wykorzystano <strong>zewnętrzny mikrofon</strong> rejestrujący początek impulsu akustycznego oraz <strong>fotorezystor</strong> wykrywający zapalenie lampy. Zestaw pozwolił uwzględnić całkowite opóźnienie systemu, w tym odpowiedź i pojemność po stronie lampy LED. Zmierzone czasy reakcji od hałasu do światła wynosiły około <strong>5–10 ms</strong>.</p>
+        </section>
+      </div>
+
+      <div class="page-three-details">
         <p class="diagram-title">Przebiegi oscyloskopowe</p>
         <div class="measurement-images">
           <figure class="measurement-figure">
@@ -877,28 +886,52 @@
             <figcaption>Drugi pomiar czasu od impulsu akustycznego do światła (F0002TEK.BMP).</figcaption>
           </figure>
         </div>
-      </div>
 
-      <div class="page-three-details">
       <section class="section">
-        <h2><span class="section-number">08</span> Bezpieczeństwo i niezawodność</h2>
+        <h2><span class="section-number">09</span> Bezpieczeństwo i niezawodność</h2>
         <p>Prototypowe urządzenie nie jest w pełni hermetyczne, ale powinno działać podczas umiarkowanego, drobnego deszczu. Jest zasilane z baterii o bezpiecznym napięciu 12 V. Użytkownik musi dbać o prawidłowy stan, ładowanie i przechowywanie baterii.</p>
         <p>Przy uruchomieniu urządzenie automatycznie generuje próbny błysk lampy. Pozwala to sprawdzić gotowość systemu oraz ocenić jasność światła przed rozpoczęciem treningu lub zawodów.</p>
       </section>
 
       <section class="section">
-        <h2><span class="section-number">09</span> Możliwości rozwoju</h2>
+        <h2><span class="section-number">10</span> Możliwości rozwoju</h2>
         <ul>
           <li>bezpośrednie zintegrowanie sygnału startowego z przyciskiem startowym lub pistoletem elektronicznym,</li>
           <li>w przypadku użycia przycisku zamiast mikrofonu — dodanie wyjścia audio generującego dźwiękowy sygnał startu bez użycia pistoletu.</li>
         </ul>
       </section>
 
+      </div>
+      </div>
+    </main>
+
+    <footer class="page-footer">
+      <div><strong>WK Software Solutions</strong></div>
+      <div>Witold Kaczurba</div>
+      <div><strong>Rev.0</strong></div>
+      <div class="right">Strona <strong class="page-number">—</strong> / <span class="page-total">—</span></div>
+    </footer>
+  </section>
+
+  <!-- STRONA 4 -->
+  <section class="sheet">
+    <header class="page-header">
+      <div class="brand">
+        <span class="brand-mark">WK</span>
+        <span>WK Software Solutions</span>
+      </div>
+      <div class="header-label">Opis projektu technicznego</div>
+    </header>
+
+    <main class="page-content compact page-four">
+      <div class="page-three-columns">
+      <div class="page-two-column">
       <section class="section">
-        <h2><span class="section-number">10</span> Wartość rozwiązania</h2>
+        <h2><span class="section-number">11</span> Wartość rozwiązania</h2>
         <p>Projekt łączy prostą elektronikę z analizą sygnału w czasie rzeczywistym. Jego główną wartością jest zwiększenie dostępności sportu i stworzenie bardziej równych warunków startu. Mobilna konstrukcja pozwala używać systemu na obiektach, które nie mają specjalistycznej instalacji dla zawodników z ubytkiem słuchu.</p>
       </section>
-
+      </div>
+      <div class="page-two-column">
       <section class="section">
         <h2><span class="section-number">REV</span> Historia rewizji</h2>
         <table class="revision-history">
