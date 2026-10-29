@@ -1,0 +1,84 @@
+STARTER PISTOL - NETLIST                                                   rev 0
+================================================================================
+Source: routing table (CSV). Diagram: starter-pistol-wiring.drawio / .svg
+        ASCII sketch: starter-pistol-ascii.txt
+
+Notation:  REF.PIN    e.g. MCU.D7 = pin D7 of the NodeMCU
+           A net is a set of pins that are wired together.
+
+REFERENCE DESIGNATORS
+--------------------------------------------------------------------------------
+  BAT   Battery, 12 V
+  BASE  Base board (12 V -> 5 V supply)
+  MCU   NodeMCU ESP-12E (ESP8266)      - "ARDUINO BOARD" in the routing table
+  MIC   INMP441 I2S MEMS microphone board
+  FET   IRF520 MOSFET driver module
+  LED   LED lamp (12 V)
+
+NETS
+--------------------------------------------------------------------------------
+Power
+  +12V       BAT.12V+      BASE.VCC_IN      FET.VIN
+  +5V        BASE.VCC_OUT  MCU.VCC_IN
+  3V3        MCU.3V3       MIC.VDD
+  GND        BAT.12V-      BASE.GND         MCU.GND (all GND pins)
+             FET.GND       MIC.GND          MIC.L/R
+
+I2S microphone (ESP8266 hardware I2S RX pins)
+  I2S_SCK    MCU.D7 (I2SI_BCK)   MIC.SCK
+  I2S_WS     MCU.D5 (I2SI_WS)    MIC.WS
+  I2S_SD     MCU.D6 (I2SI_DATA)  MIC.SD
+
+Output stage
+  GATE       MCU.D0 (GPIO16)    FET.SIG
+  LED_+12V   FET.V+             LED.+12V
+  LED_-12V   FET.V-             LED.-12V     (negative side, switched by the MOSFET)
+
+Total: 10 nets, 25 pin connections.
+
+PINS BY COMPONENT
+--------------------------------------------------------------------------------
+BAT   BATTERY 12V
+  12V+      +12V
+  12V-      GND
+
+BASE  BASE BOARD
+  VCC_IN    +12V
+  VCC_OUT   +5V
+  GND       GND
+
+MCU   NodeMCU ESP-12E
+  VCC_IN    +5V
+  3V3       3V3
+  D0        GATE
+  D5        I2S_WS
+  D6        I2S_SD
+  D7        I2S_SCK
+  GND       GND
+
+MIC   INMP441
+  VDD       3V3
+  GND       GND
+  L/R       GND          (tied to GND = left channel)
+  WS        I2S_WS
+  SCK       I2S_SCK
+  SD        I2S_SD
+
+FET   IRF520 MOSFET module
+  VIN       +12V
+  GND       GND
+  SIG       GATE
+  V+        LED_+12V
+  V-        LED_-12V
+
+LED   LED LAMP
+  +12V      LED_+12V
+  -12V      LED_-12V
+
+NOTES
+--------------------------------------------------------------------------------
+- The routing table had "VDD (INMP441)" under the IRF520 column in the 3V3 row;
+  it is read as the same connection as the later 3V3 -> MIC.VDD row, so there is
+  one 3V3 net, not two.
+- The NodeMCU has several GND pins; the table uses it three times (supply
+  return, MIC.GND, MIC.L/R). They are all the same net.

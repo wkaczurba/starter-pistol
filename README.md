@@ -4,6 +4,8 @@ Firmware for a NodeMCU ESP-12E (ESP8266) board that listens on an I2S
 microphone for a starter-pistol shot and fires an external MOSFET-driven
 output when one is detected.
 
+![Prototype: NodeMCU, microphone and MOSFET module on a battery box, connected to a three-module green LED lamp on an acrylic stand](docs/assets/prototype_front.png)
+
 See [ABOUT.md](ABOUT.md) for the motivation (a visual start signal for deaf
 and hard-of-hearing young runners) and the technical challenges involved.
 
@@ -23,6 +25,15 @@ Provided in two equivalent forms with the same logic:
 
 Pin assignments live in `pins.h` (duplicated for each build: `include/pins.h`
 for PlatformIO, `arduino/starter-pistol/pins.h` for the Arduino IDE sketch).
+
+### Wiring
+
+![Starter pistol wiring diagram](docs/wiring/starter-pistol-wiring.png)
+
+Editable source: [`starter-pistol-wiring.drawio`](docs/wiring/starter-pistol-wiring.drawio)
+(open in diagrams.net). Also available as a text
+[netlist](docs/wiring/starter-pistol-netlist.txt) and an
+[ASCII sketch](docs/wiring/starter-pistol-ascii.txt).
 
 ## Firmware
 
