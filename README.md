@@ -160,6 +160,15 @@ pio device monitor -b 115200
 Arduino IDE: open `arduino/starter-pistol/starter-pistol.ino`, select
 "NodeMCU 1.0 (ESP-12E Module)", then Upload.
 
+## Licence
+
+- **Code** (`src/`, `include/`, `arduino/`, `python/`): [MIT](LICENSE).
+- **Documentation, photos, diagrams and scope captures** (`docs/`,
+  `tektronix/`, this README's text): [CC BY 4.0](docs/LICENSE.md).
+
+Both are free to use, including commercially, as long as the author is
+credited.
+
 ## Author
 
 Witold (Vito) Kaczurba, [www.witoldkaczurba.com](https://www.witoldkaczurba.com)
