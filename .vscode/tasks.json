@@ -1,0 +1,29 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Configure desktop tests",
+      "type": "process",
+      "command": "cmake",
+      "args": ["-S", "${workspaceFolder}", "-B", "${workspaceFolder}/build/desktop", "-DCMAKE_BUILD_TYPE=Debug"],
+      "problemMatcher": []
+    },
+    {
+      "label": "Build desktop tests",
+      "type": "process",
+      "command": "cmake",
+      "args": ["--build", "${workspaceFolder}/build/desktop", "--config", "Debug"],
+      "dependsOn": "Configure desktop tests",
+      "problemMatcher": ["$gcc"],
+      "group": {"kind": "build", "isDefault": true}
+    },
+    {
+      "label": "Run desktop tests",
+      "type": "process",
+      "command": "ctest",
+      "args": ["--test-dir", "${workspaceFolder}/build/desktop", "-C", "Debug", "--output-on-failure"],
+      "dependsOn": "Build desktop tests",
+      "problemMatcher": []
+    }
+  ]
+}
