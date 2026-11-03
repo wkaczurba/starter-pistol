@@ -7,7 +7,6 @@
 // I2S microphone configuration
 // ---------------------------------------------------------------------------
 #define SAMPLE_RATE 16000
-#define I2S_READ_BATCH 100 // samples processed per loop() pass
 
 // ---------------------------------------------------------------------------
 // Shot detection tuning (FIR + noise-floor spike detector).
@@ -141,15 +140,12 @@ void loop() {
     mosfetActive = false;
   }
 
-  for (int i = 0; i < I2S_READ_BATCH; i++) {
-    int16_t left, right;
-    i2s_read_sample(&left, &right, true);
+  // Process one frame per pass so output housekeeping runs between frames.
+  int16_t left, right;
+  if (!i2s_read_sample(&left, &right, true)) return;
 
-    // Filter only the useful mic channel, as in the reference sketch.
-    float left_filtered = fir_process(left);
-    float right_unfiltered = left; // reference takes detection input from left too.
-
-    detectPistolShot(right_unfiltered);
-    (void)left_filtered;
-  }
+  // Preserve the existing detector input: the unfiltered left channel.
+  float left_filtered = fir_process(left);
+  detectPistolShot(left);
+  (void)left_filtered;
 }
